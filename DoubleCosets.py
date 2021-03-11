@@ -27,24 +27,20 @@ def expectedvalue(lst):
         sum += (lst[i] * prb)
     return(sum)
 
-# def secondmoment(lst):
-#     n = len(lst)
-#     prb = 1/n
-#     sum = 0
-#     for i in range(n):
-#         sum += ((lst[i]**2) * prb)
-#     return(sum)
-
-def variance(lst):
+def secondmoment(lst):
     n = len(lst)
     prb = 1/n
     sum = 0
     for i in range(n):
-        sum += (lst[i] * prb)
+        sum += ((lst[i]**2) * prb)
     return(sum)
 
+def variance(x, y):
+    var = x - (y**2)
+    return(var)
 
-k = 5
+
+k = 4
 n = 8
 b1 = list(range(1,k+1))
 b2 = list(range(k+1,n))
@@ -78,7 +74,8 @@ for sigma in Sn:
 
 #Print out statistics stuff
 for T in doublecosets:
-    print(T, doublecosets[T], len(doublecosets[T]), expectedvalue(doublecosets[T]))
+    print(T, len(doublecosets[T])) 
+    print(expectedvalue(doublecosets[T]), secondmoment(doublecosets[T]), variance(secondmoment(doublecosets[T]), expectedvalue(doublecosets[T])))
 
 print(len(doublecosets))
 

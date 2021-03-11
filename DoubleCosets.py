@@ -1,5 +1,7 @@
 # Double Cosets CLT
 
+from __future__ import division
+
 import random
 import itertools
 import collections
@@ -17,22 +19,40 @@ def descentnum(pi):
             count += 1
     return(count)
 
-k = 3
-n = 6
+def expectedvalue(lst):
+    n = len(lst)
+    prb = 1/n
+    sum = 0
+    for i in range(n):
+        sum += (lst[i] * prb)
+    return(sum)
+
+# def secondmoment(lst):
+#     n = len(lst)
+#     prb = 1/n
+#     sum = 0
+#     for i in range(n):
+#         sum += ((lst[i]**2) * prb)
+#     return(sum)
+
+def variance(lst):
+    n = len(lst)
+    prb = 1/n
+    sum = 0
+    for i in range(n):
+        sum += (lst[i] * prb)
+    return(sum)
+
+
+k = 5
+n = 8
 b1 = list(range(1,k+1))
 b2 = list(range(k+1,n))
 Sn = sorted(list(permutations(range(1,n))))
-#size = len(Sn)
-#print(size)
 
-descentlist = []
-matrixlist = []
-
+doublecosets = {}
 
 for sigma in Sn:
-    print(sigma)
-    #descentlist.append(descentnum(sigma))
-    #print(descentnum(sigma))
     kblock = []
     nkblock = []
     for i in range(0,k):
@@ -43,20 +63,30 @@ for sigma in Sn:
     T12block = intersection(kblock, b2)
     T21block = intersection(nkblock, b1)
     T22block = intersection(nkblock, b2)
-    #print(kblock)
-    #print(nkblock)
     T11 = len(T11block)
     T12 = len(T12block)
     T21 = len(T21block)
     T22 = len(T22block)
-    T = [[T11, T12], [T21, T22]]
-    if T not in matrixlist:
-        matrixlist.append(T)
-    print(np.matrix(T))
-    print(descentnum(sigma))
 
-for A in matrixlist:
-   print(np.matrix(A))
+    T = ((T11, T12), (T21, T22))
+
+    # sets up dictionary
+    if T in doublecosets:
+        doublecosets[T].append(descentnum(sigma))
+    else:
+        doublecosets[T] = [descentnum(sigma)]
+
+#Print out statistics stuff
+for T in doublecosets:
+    print(T, doublecosets[T], len(doublecosets[T]), expectedvalue(doublecosets[T]))
+
+print(len(doublecosets))
+
+
+#place cosets in "bins"
+#place descents in respective cosets
+#size of coset
+#probability mass function 
 
 
 

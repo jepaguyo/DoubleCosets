@@ -39,56 +39,113 @@ def variance(x, y):
     var = x - (y**2)
     return(var)
 
+def countX(lst, x): 
+    count = 0
+    for ele in lst: 
+        if (ele == x): 
+            count = count + 1
+    return count 
 
-k = 4
-n = 8
-b1 = list(range(1,k+1))
-b2 = list(range(k+1,n))
-Sn = sorted(list(permutations(range(1,n))))
+# Initialize parameters
+n = 9
 
-doublecosets = {}
+print 'Statistics for descents in fixed cosets of S_n, where n = ', n-1
+print '\n'
+for k in range(n):
+    b1 = list(range(1,k+1))
+    b2 = list(range(k+1,n))
+    Sn = sorted(list(permutations(range(1,n))))
 
-for sigma in Sn:
-    kblock = []
-    nkblock = []
-    for i in range(0,k):
-        kblock.append(sigma[i])
-    for i in range(k,n-1):
-        nkblock.append(sigma[i])
-    T11block = intersection(kblock, b1)
-    T12block = intersection(kblock, b2)
-    T21block = intersection(nkblock, b1)
-    T22block = intersection(nkblock, b2)
-    T11 = len(T11block)
-    T12 = len(T12block)
-    T21 = len(T21block)
-    T22 = len(T22block)
+    doublecosets = {}
 
-    T = ((T11, T12), (T21, T22))
+    for sigma in Sn:
+        kblock = []
+        nkblock = []
+        for i in range(0,k):
+            kblock.append(sigma[i])
+        for i in range(k,n-1):
+            nkblock.append(sigma[i])
+        T11block = intersection(kblock, b1)
+        T12block = intersection(kblock, b2)
+        T21block = intersection(nkblock, b1)
+        T22block = intersection(nkblock, b2)
+        T11 = len(T11block)
+        T12 = len(T12block)
+        T21 = len(T21block)
+        T22 = len(T22block)
 
-    # sets up dictionary
-    if T in doublecosets:
-        doublecosets[T].append(descentnum(sigma))
-    else:
-        doublecosets[T] = [descentnum(sigma)]
+        T = ((T11, T12), (T21, T22))
 
-#Print out statistics stuff
-for T in doublecosets:
-    print(T, len(doublecosets[T])) 
-    print(expectedvalue(doublecosets[T]), secondmoment(doublecosets[T]), variance(secondmoment(doublecosets[T]), expectedvalue(doublecosets[T])))
-
-print(len(doublecosets))
-
-
-#place cosets in "bins"
-#place descents in respective cosets
-#size of coset
-#probability mass function 
+        # sets up dictionary
+        if T in doublecosets:
+            doublecosets[T].append(descentnum(sigma))
+        else:
+            doublecosets[T] = [descentnum(sigma)]
 
 
+    #Print out statistics stuff
+
+    print 'k = ', k
+    print 'Number of double cosets', len(doublecosets)
+    print '\n'
+    for T in doublecosets:
+        print 'Double coset: '
+        print np.array(T)
+        print 'Size: ', len(doublecosets[T])
+        print 'Expected value: ', expectedvalue(doublecosets[T]) 
+        print 'Variance: ', variance(secondmoment(doublecosets[T]), expectedvalue(doublecosets[T]))
+        print 'Histogram for (number of descents, frequency): '
+        for i in range(n-1):
+            print(i, countX(doublecosets[T], i))
+        print '\n'
 
 
+# b1 = list(range(1,k+1))
+# b2 = list(range(k+1,n))
+# Sn = sorted(list(permutations(range(1,n))))
 
-    
+# doublecosets = {}
+
+# for sigma in Sn:
+#     kblock = []
+#     nkblock = []
+#     for i in range(0,k):
+#         kblock.append(sigma[i])
+#     for i in range(k,n-1):
+#         nkblock.append(sigma[i])
+#     T11block = intersection(kblock, b1)
+#     T12block = intersection(kblock, b2)
+#     T21block = intersection(nkblock, b1)
+#     T22block = intersection(nkblock, b2)
+#     T11 = len(T11block)
+#     T12 = len(T12block)
+#     T21 = len(T21block)
+#     T22 = len(T22block)
+
+#     T = ((T11, T12), (T21, T22))
+
+#     # sets up dictionary
+#     if T in doublecosets:
+#         doublecosets[T].append(descentnum(sigma))
+#     else:
+#         doublecosets[T] = [descentnum(sigma)]
+
+
+# #Print out statistics stuff
+
+# print 'n = ', n-1
+# print 'k = ', k
+# print 'Number of double cosets', len(doublecosets)
+# print '\n'
+# for T in doublecosets:
+#     print 'Double coset: '
+#     print np.array(T)
+#     print 'Size: ', len(doublecosets[T])
+#     print 'Expected value: ', expectedvalue(doublecosets[T]) 
+#     print 'Variance: ', variance(secondmoment(doublecosets[T]), expectedvalue(doublecosets[T]))
+#     print 'Histogram for (number of descents, frequency): '
+#     for i in range(n-1):
+#         print(i, countX(doublecosets[T], i))
+#     print '\n'
 
 
